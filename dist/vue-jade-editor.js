@@ -1,6 +1,6 @@
 /**
  * vue-jade-editor
- * @version v0.0.2 - 2016-04-13
+ * @version v0.0.3 - 2016-04-13
  * @link http://html5beta.com/apps/vue-jade-editor.html
  * @author ZHAO Xudong (zxdong@gmail.com)
  * @license MIT License, http://www.opensource.org/licenses/MIT
