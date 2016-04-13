@@ -1,0 +1,44 @@
+{
+  "name": "vue-jade-editor",
+  "description": "jade online editor plugin for vue.js",
+  "version": "0.0.1",
+  "keywords": [
+    "jade",
+    "editor",
+    "vue"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "main": "dist/vue-jade-editor.js",
+  "homepage": "http://html5beta.com/apps/vue-jade-editor.html",
+  "bugs": "https://github.com/zxdong262/vue-jade-editor/issues",
+  "author": {
+    "email": "zxdong@gmail.com",
+    "name": "ZHAO Xudong",
+    "url": "http://html5beta.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxdong262/vue-jade-editor"
+  },
+  "licenses": "MIT",
+  "dependencies": {
+    "vue": "^1.0.21",
+    "google-code-prettify": "1.0.4"
+  },
+  "devDependencies": {
+    "jquery": "2.2.3"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "/routes/",
+    "/lib/",
+    "/views/",
+    "/*.js",
+    "/*.sh",
+  ]
+}
