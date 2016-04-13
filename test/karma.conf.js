@@ -17,7 +17,6 @@ module.exports = function(config) {
     files: [
       'bower_components/vue/dist/vue.js',
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/google-code-prettify/bin/prettify.min.js',
       'dist/vue-jade-editor.min.js',
       'test/test.js'
     ],

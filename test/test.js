@@ -13,20 +13,19 @@ describe('vue-jade-editor', function () {
 		$('#sandbox').remove( )
 	})
 
-	var elem = '<div id="test"><jadeeditor v-bind:content.sync="content", v-bind:lang="lang", v-bind:maxlength="maxlength"><jadeeditor></div>'
+	var elem = '<div id="test"><jadeeditor v-bind:content.sync="content", v-bind:rows="rows"><jadeeditor></div>'
 	
 	function prepare(data) {
 		var element = $(elem).appendTo(sandboxEl)
 		var defs = {
 			el: '#test'
 			,data: {
-				maxlength: 1000
-				,lang: 'jade'
-				,content: ''
+				content: ''
+				,rows: 2
 			}
 		}
 		if(data) $.extend(defs.data, data)
-
+		Vue.use(jadeEditor)
 		vmm = new Vue(defs)
 		return vmm
 	}
@@ -60,14 +59,14 @@ describe('vue-jade-editor', function () {
 			})
 		})
 
-		it('init lang="css"', function(done) {
+		it('init content="init content"', function(done) {
 			var vmm = prepare({
-				lang: 'css'
+				rows: 5
 			})
 			Vue.nextTick(function() {
-				var pts = $('#test').find('pre')
+				var pts = $('#test').find('textarea')
 				//console.log(pts)
-				expect(pts.prop('lang')).to.equal('css')
+				expect(pts.height() > 80).to.equal(true)
 				done()
 			})
 		})

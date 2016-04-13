@@ -4,21 +4,12 @@ var path = require('path')
 var util = require('util')
 var gutil = require('gulp-util')
 var changed = require('gulp-changed')
-
+var runSequence = require('run-sequence')
 var fs = require('fs')
 var watch = require('gulp-watch')
 var rename = require('gulp-rename')
 var plumber = require('gulp-plumber')
 ,newer = require('gulp-newer')
-,stylus = require('gulp-stylus')
-,stylusOptions1 = {
-	compress: true
-}
-,stylusOptions2 = {
-	compress: false
-}
-
-
 // CONFIG
 //
 
@@ -26,54 +17,6 @@ var src = {
 	cwd: __dirname + '/src'
 	,dist: __dirname + '/dist'
 }
-
-
-
-// CLEAN
-//
-var clean = require('gulp-clean')
-gulp.task('clean:test', function() {
-	return gulp.src(['test/.tmp/*', 'test/coverage/*'], { read: false })
-		.pipe(clean())
-})
-gulp.task('clean:dist', function() {
-	return gulp.src([src.dist + '/*'], { read: false })
-		.pipe(clean())
-})
-
-//css
-gulp.task('stylus', function() {
-
-	gulp.src(src.cwd + '/*.styl')
-		.pipe(newer({
-			dest: src.dist
-			,map: function(path) {
-				return path.replace(/\.styl$/, '.css')
-			}
-		}))
-		.pipe(plumber())
-		.pipe(rename(function(path) { path.extname = '.min.styl' }))
-		.pipe(stylus(stylusOptions1))
-		.pipe(gulp.dest(src.dist))
-
-	gulp.src(src.cwd + '/*.styl')
-		.pipe(newer({
-			dest: src.dist
-			,map: function(path) {
-				return path.replace(/\.styl$/, '.css')
-			}
-		}))
-		.pipe(plumber())
-		.pipe(stylus(stylusOptions2))
-		.pipe(gulp.dest(src.dist + '/'))
-
-	gulp.src(src.cwd + '/*.styl')
-		.pipe(rename({
-			dirname: src.dist
-		}))
-
-})
-
 
 // SCRIPTS
 //
@@ -109,10 +52,6 @@ gulp.task('ugly', function() {
 //watch
 gulp.task('watch',  function () {
 
-	watch(src.cwd + '/*.styl', function() {
-		runSequence('stylus')
-	})
-
 	watch([src.cwd + '/*.js', __dirname + '/package.json'], function() {
 		runSequence('ugly')
 	})
@@ -134,19 +73,9 @@ gulp.task('karma:unit', function() {
 	})
 })
 
-// DEFAULT
-var runSequence = require('run-sequence')
-
 gulp.task('build', ['dist'])
-gulp.task('test', function() {
-	runSequence('clean:test', 'karma:unit')
-})
+gulp.task('test', ['karma:unit'])
 gulp.task('default', ['test'])
+gulp.task('dist', ['ugly'])
+gulp.task('dt', ['dist', 'test'])
 
-gulp.task('dist', function() {
-	runSequence('clean:dist', 'ugly', 'stylus')
-})
-
-gulp.task('dt', function() {
-	runSequence('dist', 'test')
-})

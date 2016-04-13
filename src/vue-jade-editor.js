@@ -4,18 +4,15 @@ var jadeEditor = {
 
 		indent: '    '
 		,template: 
-			'<div class="jade-editor-box">' +
-				'<div class="jade-editor">' +
-					'<textarea @keyup="keyup($event)" @keydown="keydown($event)">{{content}}</textarea>' +
-					'<pre class="jade-editor-syntax prettyprint" lang="{{lang}}"></pre>' +
-				'</div>' +
-			'</div>' 
+			'<div class="jade-editor">' +
+				'<textarea rows="{{rows}}" class="{{cls}}" @keyup="keyup($event)" @keydown="keydown($event)" @click="syncSelection()" @change="syncSelection()">{{content}}</textarea>' +
+			'</div>'
 		,data: function() {
 			return {
 				_textarea: false
-				,_pre : false
 				,nSelStart: 0
 				,nSelEnd: 0
+				,cls: 'form-control'
 			}
 		}
 		
@@ -48,7 +45,7 @@ jadeEditor.install = function(Vue) {
 		template: jadeEditor.default.template
 		,props: {
 			content: String
-			,lang: String
+			,rows: Number
 		}
 		,data: jadeEditor.default.data
 		,events: {
@@ -100,14 +97,8 @@ jadeEditor.install = function(Vue) {
 
 			,getTextArea: function() {
 				if(this._textarea) return this._textarea 
-				this._textarea = this.$el.children[0].children[0]
+				this._textarea = this.$el.children[0]
 				return this._textarea
-			}
-
-			,getPre: function() {
-				if(this._pre) return this._pre
-				this._pre = this.$el.children[0].children[1]
-				return this._pre
 			}
 
 			,syncSelection: function() {
@@ -122,16 +113,9 @@ jadeEditor.install = function(Vue) {
 			,updateSyntax: function() {
 				var
 				dom = this.getTextArea()
-				,pre = this.getPre()
-
-				if(!pre) return
-				pre.innerHTML = dom.value.replace(/</g, '&lt;').replace(/>/g, '&gt;')
-				pre.classList.remove('prettyprinted')
-
+				this.content = dom.value
 				this.syncSelection()
-				prettyPrint(null, this.$el)
 				this.autoGrow()
-
 			}
 
 			,autoGrow: function() {
@@ -425,5 +409,5 @@ if (typeof exports == "object") {
 } else if (typeof define == "function" && define.amd) {
 	define([], function(){ return jadeEditor })
 } else if (window.Vue) {
-	Vue.use(jadeEditor)
+	window.jadeEditor = jadeEditor
 }

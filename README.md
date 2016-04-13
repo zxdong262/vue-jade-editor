@@ -1,59 +1,45 @@
-# jade-editor
+# vue-jade-editor
+[![Build Status](https://travis-ci.org/zxdong262/vue-jade-editor.svg?branch=master)](https://travis-ci.org/zxdong262/vue-jade-editor)
+
 online jade(pug) editor plugin for vue.js
 
 ## demo & doc
-visit <a href='http://jade-editor.org'>http://jade-editor.org</a>
+visit <a href='http://html5beta.com/apps/vue-jade-editor.html'>http://html5beta.com/apps/vue-jade-editor.html</a>
 
 ## get
 ```bash
-bower install jade-editor
+bower install vue-jade-editor
 ```
 
 or
 
 ```bash
-npm install jade-editor
+npm install vue-jade-editor
 ```
-
-all the file are in <code>dist</code> folder, other code are just for jade-editor.org.
 
 ## features
-- auto indent
+- auto indent(backspace enter)
 - indent can be customized
-- auto close for <code>quote</code>, <code>single quote</code>, <code>bracket</code>, <code>left parenthesis</code>
+- auto close for quote, single quote, bracket, left parenthesis
 - smart tab: tab selection or single line
-- untab keyboard shortcuts: <code>ctrl + [</code>
-- tab keyboard shortcuts: <code>ctrl + ]</code> or just <code>tab</code>
-- keyboard shortcuts for <code>i</code> and <code>b</code>
-- syntax highlighting by google code prettify
+- untab keyboard shortcuts: ctrl + [
+- tab keyboard shortcuts: ctrl + ] or just tab
+- keyboard shortcuts for i and b
+- content can be modifed by vm.$broadcast('je-insert-content', htmlToInsert)
+- auto increase textarea height
 
-## shortcuts
-- <code>ctrl + ]</code>, <code>ctrl + ]</code>: more indent
-- <code>ctrl + [</code>: less indent
-- <code>ctrl + i</code>: '&lt;i>[selection]&lt;/i>'
-- <code>ctrl + b</code>: '&lt;b>[selection]&lt;/b>'
+## test & build
+```bash
+git clone https://github.com/zxdong262/vue-jade-editor.git
+cd vue-jade-editor
+npm install
+bower install
+gulp test
 
-## use
-```html
-<link rel="stylesheet" href="dist/jade-editor.css?0.1.0">
-<div class="jade-editor">
-    <textarea id="je"></textarea>
-    <pre lang="jade" class="jade-editor-syntax prettyprint"></pre>
-</div>
-<script src="dist/vender/prettify.js"></script>
-<script src="dist/jade-editor.min.js"></script>
-<script>
-    var je = new JadeEditor('je', {
-        indent: '    ' //4 space as indent
-    })
-</script>
+#build
+gulp build
+
 ```
-
-## todo
-test
 
 ## License
 MIT
-
-## changelog
-- 0.2.5 fix 'enter' function
