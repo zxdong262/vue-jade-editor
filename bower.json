@@ -1,7 +1,7 @@
 {
   "name": "vue-jade-editor",
   "description": "jade online editor plugin for vue.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "keywords": [
     "jade",
     "editor",
@@ -24,9 +24,10 @@
   },
   "licenses": "MIT",
   "dependencies": {
-    "vue": "^1.0.21"
+    
   },
   "devDependencies": {
+    "vue": "^1.0.21",
     "jquery": "2.2.3"
   },
   "ignore": [
