@@ -1,6 +1,6 @@
 /**
  * vue-jade-editor
- * @version v0.0.3 - 2016-04-13
+ * @version v0.1.0 - 2016-04-22
  * @link http://html5beta.com/apps/vue-jade-editor.html
  * @author ZHAO Xudong (zxdong@gmail.com)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -54,11 +54,14 @@ jadeEditor.install = function(Vue) {
 		,props: {
 			content: String
 			,rows: Number
+			,id: String
 		}
 		,data: jadeEditor.default.data
 		,events: {
 
-			'je-insert-content': function(content, select) {
+			'je-insert-content': function(content, id, select) {
+
+				if(id !== this.id) return
 
 				var
 				dom = this.getTextArea()

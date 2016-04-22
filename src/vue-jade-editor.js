@@ -46,11 +46,14 @@ jadeEditor.install = function(Vue) {
 		,props: {
 			content: String
 			,rows: Number
+			,id: String
 		}
 		,data: jadeEditor.default.data
 		,events: {
 
-			'je-insert-content': function(content, select) {
+			'je-insert-content': function(content, id, select) {
+
+				if(id !== this.id) return
 
 				var
 				dom = this.getTextArea()

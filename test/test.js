@@ -13,7 +13,7 @@ describe('vue-jade-editor', function () {
 		$('#sandbox').remove( )
 	})
 
-	var elem = '<div id="test"><jadeeditor v-bind:content.sync="content", v-bind:rows="rows"><jadeeditor></div>'
+	var elem = '<div id="test"><jadeeditor v-bind:content.sync="content", v-bind:rows="rows", :id="jid"><jadeeditor></div>'
 	
 	function prepare(data) {
 		var element = $(elem).appendTo(sandboxEl)
@@ -22,6 +22,7 @@ describe('vue-jade-editor', function () {
 			,data: {
 				content: ''
 				,rows: 2
+				,jid: 'xx'
 			}
 		}
 		if(data) $.extend(defs.data, data)
@@ -79,9 +80,10 @@ describe('vue-jade-editor', function () {
 		it('init content="init content"', function(done) {
 			var vmm = prepare({
 				content: 'init content'
+				,jid: 'cc'
 			})
 
-			vmm.$broadcast('je-insert-content', 'custom')
+			vmm.$broadcast('je-insert-content', 'custom', 'cc')
 			Vue.nextTick(function() {
 				var pts = $('#test').find('textarea')
 				//console.log(pts)

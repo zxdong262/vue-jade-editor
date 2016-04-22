@@ -25,7 +25,7 @@ npm install vue-jade-editor
 - untab keyboard shortcuts: ctrl + [
 - tab keyboard shortcuts: ctrl + ] or just tab
 - keyboard shortcuts for i and b
-- content can be modifed by vm.$broadcast('je-insert-content', htmlToInsert)
+- content can be modifed by vm.$broadcast('je-insert-content', htmlToInsert, id)
 - auto increase textarea height
 
 ## test & build
