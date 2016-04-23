@@ -77,7 +77,7 @@ describe('vue-jade-editor', function () {
 
 	describe('insert html event', function () {
 
-		it('init content="init content"', function(done) {
+		it('insert ok', function(done) {
 			var vmm = prepare({
 				content: 'init content'
 				,jid: 'cc'
@@ -88,6 +88,22 @@ describe('vue-jade-editor', function () {
 				var pts = $('#test').find('textarea')
 				//console.log(pts)
 				expect(pts.val()).to.equal('custominit content')
+				done()
+			})
+		})
+
+
+		it('insert not ok with false id', function(done) {
+			var vmm = prepare({
+				content: 'init content'
+				,jid: 'cc'
+			})
+
+			vmm.$broadcast('je-insert-content', 'custom', 'ccx')
+			Vue.nextTick(function() {
+				var pts = $('#test').find('textarea')
+				//console.log(pts)
+				expect(pts.val()).to.equal('init content')
 				done()
 			})
 		})
