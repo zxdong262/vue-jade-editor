@@ -50,6 +50,7 @@
     "nightwatch": "^0.8.18",
     "nightwatch-custom-commands-assertions": "^1.0.5",
     "run-sequence": "^1.1.5",
+    "phantomjs-prebuilt": "^2.1.6",
     "selenium-server": "^2.53.0"
   },
   "engines": {
