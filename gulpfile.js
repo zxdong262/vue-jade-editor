@@ -57,12 +57,13 @@ gulp.task('watch',  function () {
 
 })
 
+
 // TEST
 var karma = require('karma').server
 
 gulp.task('karma:unit', function() {
 	karma.start({
-		configFile: path.join(__dirname, 'test/karma.conf.js'),
+		configFile: path.join(__dirname, 'test/unit/karma.conf.js'),
 		browsers: ['PhantomJS'],
 		reporters: ['progress'],
 		singleRun: true
@@ -72,9 +73,10 @@ gulp.task('karma:unit', function() {
 	})
 })
 
+gulp.task('test', ['karma:unit'])
 gulp.task('build', ['dist'])
 gulp.task('test', ['karma:unit'])
-gulp.task('default', ['test'])
+gulp.task('default', ['watch'])
 gulp.task('dist', ['ugly'])
 gulp.task('dt', ['dist', 'test'])
 

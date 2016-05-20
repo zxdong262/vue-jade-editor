@@ -8,7 +8,7 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: './..',
+    basePath: './../..',
 
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['mocha', 'chai', 'chai-as-promised'],
@@ -18,7 +18,7 @@ module.exports = function(config) {
       'bower_components/vue/dist/vue.js',
       'bower_components/jquery/dist/jquery.js',
       'dist/vue-jade-editor.min.js',
-      'test/test.js'
+      'test/unit/test.js'
     ],
 
     // list of files / patterns to exclude
@@ -66,8 +66,8 @@ module.exports = function(config) {
     // Coverage reporter generates the coverage
     coverageReporter: {
       reporters:[
-        {type: 'lcov', dir:'test/coverage/'},
-        {type: 'text-summary', dir:'test/coverage/'}
+        {type: 'lcov', dir:'test/unit/coverage/'},
+        {type: 'text-summary', dir:'test/unit/coverage/'}
       ]
     }
 

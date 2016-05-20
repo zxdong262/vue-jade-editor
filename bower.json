@@ -28,7 +28,8 @@
   },
   "devDependencies": {
     "vue": "^1.0.21",
-    "jquery": "2.2.3"
+    "jquery": "2.2.3",
+    "bootstrap": "^v4.0.0-alpha.2"
   },
   "ignore": [
     "**/.*",

@@ -1,0 +1,37 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='x-ua-compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.min.css', crossorigin='anonymous')
+    style.
+      body {
+        backgroud: #fff;
+      }
+
+  body
+    #app
+      jadeeditor(:content.sync='content', :rows='rows', :id='jid')
+
+      button.btn.btn-warning(@click='addHtml()') add button html to editor
+
+    script(src='/vue/dist/vue.js')
+    script(src='/jquery/dist/jquery.js')
+    script(src='/vue-jade-editor.min.js')
+    script.
+      Vue.use(jadeEditor)
+      var vue = new Vue({
+        el: '#app'
+        ,data: {
+          content: 'init content'
+          ,rows: 5
+          ,jid: 'e1'
+        }
+        ,methods: {
+          addHtml: function() {
+            this.$broadcast('je-insert-content', '<button>button</button>', 'e1')
+          }
+        }
+
+      })
