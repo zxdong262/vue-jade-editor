@@ -1,6 +1,9 @@
 language: node_js
 sudo: required
 dist: trusty
+branches:
+  only:
+    - master
 node_js:
   - "5"
 addons:
