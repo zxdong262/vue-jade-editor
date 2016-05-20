@@ -34,7 +34,7 @@ git clone https://github.com/zxdong262/vue-jade-editor.git
 cd vue-jade-editor
 npm install
 bower install
-gulp test
+npm run test
 
 #build
 gulp build
