@@ -30,7 +30,7 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage'],
 
     // web server port
-    port: 8080,
+    port: 8084,
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG

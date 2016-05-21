@@ -1,6 +1,6 @@
 /**
  * vue-jade-editor
- * @version v0.1.0 - 2016-05-20
+ * @version v0.2.0 - 2016-05-21
  * @link http://html5beta.com/apps/vue-jade-editor.html
  * @author ZHAO Xudong (zxdong@gmail.com)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -79,6 +79,45 @@ jadeEditor.install = function(Vue) {
 				this.updateSyntax()
 			}
 			
+			,'je-tab': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_tab({
+						preventDefault: function() {}
+					}, this.updateSyntax)
+				
+			}
+			,'je-untab': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_open_bracket({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+				
+			}
+			,'je-i': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_i({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+
+			}
+			,'je-b': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_b({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+
+			}
 		}
 		,methods: {
 

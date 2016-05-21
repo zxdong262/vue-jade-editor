@@ -13,8 +13,12 @@ html
   body
     #app
       jadeeditor(:content.sync='content', :rows='rows', :id='jid')
-
-      button.btn.btn-warning(@click='addHtml()') add button html to editor
+      .btn-group.btn-group-sm
+        button.btn.btn-warning.je-html(@click='evt("je-insert-content", "<button>button</button>", "e1")') add button html to editor
+        button.btn.btn-warning.je-i(@click='evt("je-i", "e1")') i
+        button.btn.btn-warning.je-b(@click='evt("je-b", "e1")') b
+        button.btn.btn-warning.je-untab(@click='evt("je-untab", "e1")') &larr;
+        button.btn.btn-warning.je-tab(@click='evt("je-tab", "e1")') &rarr;
 
     script(src='/vue/dist/vue.js')
     script(src='/jquery/dist/jquery.js')
@@ -29,8 +33,9 @@ html
           ,jid: 'e1'
         }
         ,methods: {
-          addHtml: function() {
-            this.$broadcast('je-insert-content', '<button>button</button>', 'e1')
+          evt: function() {
+            var args = Array.prototype.slice.call(arguments)
+            this.$broadcast.apply(this, args)
           }
         }
 

@@ -75,9 +75,9 @@ describe('vue-jade-editor', function () {
 	})
 
 
-	describe('insert html event', function () {
+	describe('events', function () {
 
-		it('insert ok', function(done) {
+		it('insert html ok', function(done) {
 			var vmm = prepare({
 				content: 'init content'
 				,jid: 'cc'
@@ -92,8 +92,70 @@ describe('vue-jade-editor', function () {
 			})
 		})
 
+		it('tab', function(done) {
+			var vmm = prepare({
+				content: 'init content'
+				,jid: 'cc'
+			})
+			var dom = $('#test').find('textarea')[0]
+			dom.selectionStart = 0
+			dom.selectionEnd = 0
+			vmm.$broadcast('je-tab', 'cc')
+			Vue.nextTick(function() {
+				var pts = $('#test').find('textarea')
+				//console.log(pts)
+				expect(pts.val()).to.equal('    init content')
+				done()
+			})
+		})
 
-		it('insert not ok with false id', function(done) {
+		it('i', function(done) {
+			var vmm = prepare({
+				content: 'init content'
+				,jid: 'cc'
+			})
+			vmm.$broadcast('je-i', 'cc')
+			Vue.nextTick(function() {
+				var pts = $('#test').find('textarea')
+				//console.log(pts)
+				expect(pts.val()).to.equal('<i></i>init content')
+				done()
+			})
+		})
+
+		it('b', function(done) {
+			var vmm = prepare({
+				content: 'init content'
+				,jid: 'cc'
+			})
+			vmm.$broadcast('je-b', 'cc')
+			Vue.nextTick(function() {
+				var pts = $('#test').find('textarea')
+				//console.log(pts)
+				expect(pts.val()).to.equal('<b></b>init content')
+				done()
+			})
+		})
+
+		it('untab', function(done) {
+			var vmm = prepare({
+				content: 'init content'
+				,jid: 'cc'
+			})
+			var dom = $('#test').find('textarea')[0]
+			dom.selectionStart = 0
+			dom.selectionEnd = 0
+			vmm.$broadcast('je-insert-content', '        ', 'cc')
+			vmm.$broadcast('je-untab', 'cc')
+			Vue.nextTick(function() {
+				var pts = $('#test').find('textarea')
+				//console.log(pts)
+				expect(pts.val()).to.equal('    init content')
+				done()
+			})
+		})
+
+		it('insert html not ok with false id', function(done) {
 			var vmm = prepare({
 				content: 'init content'
 				,jid: 'cc'

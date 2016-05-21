@@ -71,6 +71,45 @@ jadeEditor.install = function(Vue) {
 				this.updateSyntax()
 			}
 			
+			,'je-tab': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_tab({
+						preventDefault: function() {}
+					}, this.updateSyntax)
+				
+			}
+			,'je-untab': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_open_bracket({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+				
+			}
+			,'je-i': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_i({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+
+			}
+			,'je-b': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_b({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+
+			}
 		}
 		,methods: {
 
