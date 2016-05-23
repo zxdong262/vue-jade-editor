@@ -27,6 +27,7 @@ npm install vue-jade-editor
 - keyboard shortcuts for i and b
 - content can be modifed by `events`
 - auto increase textarea height
+- all methods/events extendable
 
 ## test & build
 ```bash

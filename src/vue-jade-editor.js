@@ -7,108 +7,13 @@ var jadeEditor = {
 			'<div class="jade-editor">' +
 				'<textarea rows="{{rows}}" class="{{cls}}" @keyup="keyup($event)" @keydown="keydown($event)" @click="syncSelection()" @change="syncSelection()">{{content}}</textarea>' +
 			'</div>'
+
 		,data: function() {
 			return {
 				_textarea: false
 				,nSelStart: 0
 				,nSelEnd: 0
 				,cls: 'form-control'
-			}
-		}
-		
-	}
-	,keycodes: {
-
-		keyup: {
-			13: 'enter'
-			,73: 'i'
-			,66: 'b'
-		}
-
-		,keydown: {
-			9: 'tab'
-			,8: 'backspace'
-			,222: 'single_quote'
-			,57: 'left_bracket'
-			,219: 'open_bracket'
-			,221: 'close_bracket'
-		}
-
-	}
-}
-
-jadeEditor.install = function(Vue) {
-
-	// define & register
-	Vue.component('jadeeditor', {
-
-		template: jadeEditor.default.template
-		,props: {
-			content: String
-			,rows: Number
-			,id: String
-		}
-		,data: jadeEditor.default.data
-		,events: {
-
-			'je-insert-content': function(content, id, select) {
-
-				if(id !== this.id) return
-
-				var
-				dom = this.getTextArea()
-				,nSelStart = this.nSelStart
-				,nSelEnd = this.nSelEnd
-				,sOldText = dom.value
-
-				dom.value = 
-					sOldText.substring(0, nSelStart) +
-					content + 
-					sOldText.substring(nSelEnd)
-
-				dom.selectionStart = select?nSelStart:nSelEnd + content.length
-				dom.selectionEnd = nSelEnd + content.length
-				this.updateSyntax()
-			}
-			
-			,'je-tab': function(id) {
-
-					if(id !== this.id) return
-
-					this.handleKeyEvt_tab({
-						preventDefault: function() {}
-					}, this.updateSyntax)
-				
-			}
-			,'je-untab': function(id) {
-
-					if(id !== this.id) return
-
-					this.handleKeyEvt_open_bracket({
-						preventDefault: function() {}
-						,ctrlKey: true
-					}, this.updateSyntax)
-				
-			}
-			,'je-i': function(id) {
-
-					if(id !== this.id) return
-
-					this.handleKeyEvt_i({
-						preventDefault: function() {}
-						,ctrlKey: true
-					}, this.updateSyntax)
-
-			}
-			,'je-b': function(id) {
-
-					if(id !== this.id) return
-
-					this.handleKeyEvt_b({
-						preventDefault: function() {}
-						,ctrlKey: true
-					}, this.updateSyntax)
-
 			}
 		}
 		,methods: {
@@ -272,15 +177,7 @@ jadeEditor.install = function(Vue) {
 				event.preventDefault()
 
 				if(!event.ctrlKey) {
-					dom.value = 
-						sOldText.substring(0, nSelStart) +
-						charOpen + 
-						targetText + 
-						charClose +
-						sOldText.substring(nSelEnd)
-					dom.selectionStart = nSelStart === nSelEnd?nSelStart + 1:nSelStart
-					dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?1:2)
-					return cb.call(th)
+					return th.insertParedContent(charOpen, charClose, cb)
 				}
 
 				var noSel = !targetText.length
@@ -333,6 +230,60 @@ jadeEditor.install = function(Vue) {
 
 			}
 
+			//insert paired tag, like i, b, small, span...
+			//<i> + selection + </i>
+			,insertParedTag: function(tag, cb) {
+
+				var th = this
+				,dom = this.getTextArea()
+				,nSelStart = dom.selectionStart
+				,nSelEnd = dom.selectionEnd
+				,sOldText = dom.value
+				,len1 = tag.length + 2
+				,len2 = len1 * 2 + 1
+
+				dom.value = 
+					sOldText.substring(0, nSelStart) + 
+					'<' + tag + '>' + 
+					sOldText.substring(nSelStart, nSelEnd) + 
+					'</' + tag + '>' + 
+					sOldText.substring(nSelEnd)
+
+				dom.selectionStart = nSelStart === nSelEnd?nSelStart + len1:nSelStart
+				dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?len1:len2)
+				cb.call(th)
+
+				//end
+
+			}
+
+			//insert paired content, like '' "" [], {}
+			//' + selection + '
+			,insertParedContent: function(contentLeft, contentRight, cb) {
+
+				var th = this
+				,dom = this.getTextArea()
+				,nSelStart = dom.selectionStart
+				,nSelEnd = dom.selectionEnd
+				,sOldText = dom.value
+				,len1 = contentLeft.length
+				,len2 = len1 + contentRight.length
+
+				dom.value = 
+					sOldText.substring(0, nSelStart) +
+					contentLeft + 
+					sOldText.substring(nSelStart, nSelEnd) + 
+					contentRight +
+					sOldText.substring(nSelEnd)
+
+				dom.selectionStart = nSelStart === nSelEnd?nSelStart + len1:nSelStart
+				dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?len1:len2)
+				cb.call(th)
+
+				//end
+
+			}
+
 			,handleKeyEvt_single_quote: function(event, cb) {
 
 				var th = this
@@ -345,16 +296,7 @@ jadeEditor.install = function(Vue) {
 
 				event.preventDefault()
 
-				dom.value = 
-					sOldText.substring(0, nSelStart) +
-					char + 
-					sOldText.substring(nSelStart, nSelEnd) + 
-					char +
-					sOldText.substring(nSelEnd)
-
-				dom.selectionStart = nSelStart === nSelEnd?nSelStart + 1:nSelStart
-				dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?1:2)
-				cb.call(th)
+				th.insertParedContent(char, char, cb)
 				//end
 
 			}
@@ -367,22 +309,11 @@ jadeEditor.install = function(Vue) {
 				,nSelEnd = dom.selectionEnd
 				,sOldText = dom.value
 
-				,char = event.shiftKey?'"':"'"
-
 				if(!event.shiftKey) return cb.call(th)
 
 				event.preventDefault()
 
-				dom.value = 
-					sOldText.substring(0, nSelStart) +
-					'(' + 
-					sOldText.substring(nSelStart, nSelEnd) + 
-					')' +
-					sOldText.substring(nSelEnd)
-
-				dom.selectionStart = nSelStart === nSelEnd?nSelStart + 1:nSelStart
-				dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?1:2)
-				cb.call(th)
+				th.insertParedContent('(', ')', cb)
 				//end
 
 			}
@@ -395,22 +326,11 @@ jadeEditor.install = function(Vue) {
 				,nSelEnd = dom.selectionEnd
 				,sOldText = dom.value
 
-				
-
 				if(!event.ctrlKey) return cb.call(th)
 
 				event.preventDefault()
 
-					dom.value = 
-						sOldText.substring(0, nSelStart) + 
-						'<i>' + 
-						sOldText.substring(nSelStart, nSelEnd) + 
-						'</i>' + 
-						sOldText.substring(nSelEnd)
-
-					dom.selectionStart = nSelStart === nSelEnd?nSelStart + 3:nSelStart
-					dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?3:7)
-					cb.call(th)
+				th.insertParedTag('i', cb)
 
 				//end
 			}
@@ -427,22 +347,113 @@ jadeEditor.install = function(Vue) {
 					
 				event.preventDefault()
 
-				dom.value = 
-					sOldText.substring(0, nSelStart) + 
-					'<b>' + 
-					sOldText.substring(nSelStart, nSelEnd) + 
-					'</b>' + 
-					sOldText.substring(nSelEnd)
-
-				dom.selectionStart = nSelStart === nSelEnd?(nSelStart + 3):nSelStart
-				dom.selectionEnd = nSelEnd + (nSelStart === nSelEnd?3:7)
-				cb.call(th)
+				th.insertParedTag('b', cb)
 
 				//end
 			}
 		}
+		,events: {
 
-	})
+			'je-insert-content': function(content, id, select) {
+
+				if(id !== this.id) return
+
+				var
+				dom = this.getTextArea()
+				,nSelStart = this.nSelStart
+				,nSelEnd = this.nSelEnd
+				,sOldText = dom.value
+
+				dom.value = 
+					sOldText.substring(0, nSelStart) +
+					content + 
+					sOldText.substring(nSelEnd)
+
+				dom.selectionStart = select?nSelStart:nSelEnd + content.length
+				dom.selectionEnd = nSelEnd + content.length
+				this.updateSyntax()
+			}
+			
+			,'je-tab': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_tab({
+						preventDefault: function() {}
+					}, this.updateSyntax)
+				
+			}
+			,'je-untab': function(id) {
+
+					if(id !== this.id) return
+
+					this.handleKeyEvt_open_bracket({
+						preventDefault: function() {}
+						,ctrlKey: true
+					}, this.updateSyntax)
+				
+			}
+			,'je-paired-tag': function(tag, id) {
+
+					if(id !== this.id) return
+
+					this.insertParedTag(tag, this.updateSyntax)
+
+			}
+			,'je-paired-content': function(contentLeft, contentRight, id) {
+
+					if(id !== this.id) return
+
+					this.insertParedContent(contentLeft, contentRight, this.updateSyntax)
+
+			}
+		}
+
+		
+	}
+	,keycodes: {
+
+		keyup: {
+			13: 'enter'
+			,73: 'i'
+			,66: 'b'
+		}
+
+		,keydown: {
+			9: 'tab'
+			,8: 'backspace'
+			,222: 'single_quote'
+			,57: 'left_bracket'
+			,219: 'open_bracket'
+			,221: 'close_bracket'
+		}
+
+	}
+}
+
+jadeEditor.base = function() {
+
+	return {
+
+		template: jadeEditor.default.template
+		,props: {
+			content: String
+			,rows: Number
+			,id: String
+		}
+		,data: jadeEditor.default.data
+		,events: jadeEditor.default.events
+		,methods: jadeEditor.default.methods
+	}
+
+}
+
+
+jadeEditor.install = function(Vue) {
+
+	// define & register
+	Vue.component('jadeeditor', jadeEditor.base())
+
 }
 
 
